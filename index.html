@@ -39,7 +39,7 @@
         }
 
         #game {
-            top: 300px;
+            top: 105px;
             left: 20px;
             width: 1280px;
             height: 720px;
@@ -49,21 +49,20 @@
         }
 
         #aso {
-            top: 1050px;
+            top: 860px;
             left: 20px;
             border: 5px solid green;
             position: absolute;
         }
 
         #kakusi {
-            top: 300px;
+            top: 105px;
             left: 20px;
             width: 1280px;
             height: 720px;
             border: 10px solid black;
             position: absolute;
             cursor: none;
-            ;
         }
 
         #sta {
@@ -102,7 +101,7 @@
         }
 
         canvas {
-            top: 300px;
+            top: 105px;
             left: 20px;
             border: 10px solid blue;
             position: absolute;
@@ -117,6 +116,9 @@
 
         #lt0 {
             display: inline-block;
+            position: absolute;
+            top: 50px;
+            left: 20px;
         }
 
         #lt1 {
@@ -145,22 +147,64 @@
             display: block;
             display: inline-block;
         }
+
+        #mozi {
+            display: inline-block;
+            cursor: none;
+            z-index: 1;
+            top: 135px;
+            left: 40px;
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        #r1 {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        #r2 {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        #r3 {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        #r4 {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        #timer {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 24px;
+        }
     </style>
 </head>
 
 <body>
     <h1>シューティングゲーム(ページ下緑枠の遊び方をまずお読みください)</h1>
     <div id="lt0"><button id="lt1">30秒</button>
-    <button id="lt2">60秒</button>
-    <button id="lt3">90秒</button>
-    <button id="lt4">120秒</button></div>
-    <button id="rise">リセット</button></div>
+        <button id="lt2">60秒</button>
+        <button id="lt3">90秒</button>
+        <button id="lt4">120秒</button>
+        <button id="rise">リセット</button>
+    </div>
     <button id="start" onclick="gamestart">ゲームスタート！</button>
-    <p id="r1">敵を0体撃破</p>
-    <p id="r2">味方を0体撃破</p>
-    <p id="r3">総スコア</p>
-    <p id="r4">ハイスコア</p>
-    <p id="timer">制限時間 秒</p>
+    <div id="mozi">
+        <p id="r1">敵を0体撃破</p>
+        <p id="r2">味方を0体撃破</p>
+        <p id="r3">総スコア</p>
+        <p id="r4">ハイスコア</p>
+        <p id="timer">制限時間 秒</p>
+    </div>
     <div id="game">
         <img src="road_douro.png" id="haikei">
         <img src="rteki1.png" id="enemy1" onclick="pushed1()">
@@ -176,10 +220,15 @@
     <div id="aso">
         <h2>遊び方</h2>
         <p>このゲームは音が出ます。ご注意ください。</p>
-        <p>ブラウザのズーム調整機能にて敵をn体撃破～青枠最下端が画面に収まるように調整していただくと最大限お楽しみいただけます。</p>
+        <p>ブラウザの①右上三点を押すと出てくる②ズーム調整機能にて青枠画面に収まるように調整した後③全画面表示機能を使用していただくと最大限お楽しみいただけます。詳しくは画像参照(画像はchromeの場合。edgeも同様の位置に同様の機能あり)
+        </p>
+        <img src="setumei.png">
         <p>最初に制限時間を選択しボタンを押します。</p>
         <p>ゲームスタート！と書かれたボタンが出てくるので押します。</p>
         <p>赤が敵で青が撃ってはいけない味方です。赤い敵に照準を合わせクリックしていきます。敵によってスコアは異なります。</p>
+        <p>敵の配置は敵をすべて倒す、または味方を一体でも倒してしまうとリセットされます。</p>
+        <p>敵(味方)が重なっている場合は原則上に表示されている敵(味方)にのみ当たり判定があります。</p>
+        <p>当たり判定は四角です。そのため空白に見えてもあたりと判定されることがあります。ご了承ください。</p>
         <p>ゲーム終了と出たら終了です。枠が数秒黒になった後再度青に戻れば時間を選び再度プレイしていただけます。</p>
         <p>制限時間はカウントダウン形式で表示されます。適宜お好みでご確認ください。</p>
         <p>時間を選ばず始めた場合はやめるまで続きます。制限時間が要らない方はご利用ください。</p>
@@ -240,25 +289,46 @@
         let ran8 = Math.floor(Math.random() * b); //横座標ランダムally1
         let ran9 = Math.floor(Math.random() * a); //縦座標ランダムally2
         let ran10 = Math.floor(Math.random() * b); //横座標ランダムally2
+        let enemy1 = document.getElementById("enemy1");
+        let enemy2 = document.getElementById("enemy2");
+        let enemy3 = document.getElementById("enemy3");
+        let allly1 = document.getElementById("ally1");
+        let allly2 = document.getElementById("ally2");
         let enemy1Size = { x: ran1, y: ran2, w: w1, h: h1 };
         let enemy2Size = { x: ran3, y: ran4, w: w2, h: h2 };
         let enemy3Size = { x: ran5, y: ran6, w: w3, h: h3 };
         let ally1Size = { x: ran7, y: ran8, w: w4, h: h4 };
         let ally2Size = { x: ran9, y: ran10, w: w5, h: h5 };
+        let pos = { x: 0, y: 0 };
+
+        function rankaku() {
+            ran1 = Math.floor(Math.random() * a); //縦座標ランダムenemy1
+            ran2 = Math.floor(Math.random() * b); //横座標ランダムenemy1
+            ran3 = Math.floor(Math.random() * a); //縦座標ランダムenemy2
+            ran4 = Math.floor(Math.random() * b); //横座標ランダムenemy2
+            ran5 = Math.floor(Math.random() * a); //縦座標ランダムenemy3
+            ran6 = Math.floor(Math.random() * b); //横座標ランダムenemy3
+            ran7 = Math.floor(Math.random() * a); //縦座標ランダムally1
+            ran8 = Math.floor(Math.random() * b); //横座標ランダムally1
+            ran9 = Math.floor(Math.random() * a); //縦座標ランダムally2
+            ran10 = Math.floor(Math.random() * b); //横座標ランダムally2
+            ctx.drawImage(allly1, ran7, ran8, w4, h4);
+            ctx.drawImage(allly2, ran9, ran10, w5, h5);
+            ctx.drawImage(enemy1, ran1, ran2, w1, h1);
+            ctx.drawImage(enemy2, ran3, ran4, w2, h2);
+            ctx.drawImage(enemy3, ran5, ran6, w3, h3);
+            ally1Size = { x: ran7, y: ran8, w: w4, h: h4 };
+            ally2Size = { x: ran9, y: ran10, w: w5, h: h5 };
+            enemy1Size = { x: ran1, y: ran2, w: w1, h: h1 };
+            enemy2Size = { x: ran3, y: ran4, w: w2, h: h2 };
+            enemy3Size = { x: ran5, y: ran6, w: w3, h: h3 };
+
+        }
 
         window.onload = function () {
             canvas = document.getElementById("can");
             ctx = canvas.getContext("2d");
-            enemy1 = document.getElementById("enemy1");
-            enemy2 = document.getElementById("enemy2");
-            enemy3 = document.getElementById("enemy3");
-            allly1 = document.getElementById("ally1");
-            allly2 = document.getElementById("ally2");
-            ctx.drawImage(enemy1, ran1, ran2, w1, h1);
-            ctx.drawImage(enemy2, ran3, ran4, w2, h2);
-            ctx.drawImage(enemy3, ran5, ran6, w3, h3);
-            ctx.drawImage(allly1, ran7, ran8, w4, h4);
-            ctx.drawImage(allly2, ran9, ran10, w5, h5);
+            rankaku();
             console.log("kaketa");
             canvas.addEventListener("click", hoge);
         }
@@ -333,26 +403,7 @@
                 }
             }
             const countDownTimer = setInterval(countDown, 1000);
-            ran1 = Math.floor(Math.random() * a); //縦座標ランダムenemy1
-            ran2 = Math.floor(Math.random() * b); //横座標ランダムenemy1
-            ran3 = Math.floor(Math.random() * a); //縦座標ランダムenemy2
-            ran4 = Math.floor(Math.random() * b); //横座標ランダムenemy2
-            ran5 = Math.floor(Math.random() * a); //縦座標ランダムenemy3
-            ran6 = Math.floor(Math.random() * b); //横座標ランダムenemy3
-            ran7 = Math.floor(Math.random() * a); //縦座標ランダムally1
-            ran8 = Math.floor(Math.random() * b); //横座標ランダムally1
-            ran9 = Math.floor(Math.random() * a); //縦座標ランダムally2
-            ran10 = Math.floor(Math.random() * b); //横座標ランダムally2
-            ctx.drawImage(allly1, ran7, ran8, w4, h4);
-            ctx.drawImage(allly2, ran9, ran10, w5, h5);
-            ctx.drawImage(enemy1, ran1, ran2, w1, h1);
-            ctx.drawImage(enemy2, ran3, ran4, w2, h2);
-            ctx.drawImage(enemy3, ran5, ran6, w3, h3);
-            enemy1Size = { x: ran1, y: ran2, w: w1, h: h1 };
-            enemy2Size = { x: ran3, y: ran4, w: w2, h: h2 };
-            enemy3Size = { x: ran5, y: ran6, w: w3, h: h3 };
-            ally1Size = { x: ran7, y: ran8, w: w4, h: h4 };
-            ally2Size = { x: ran9, y: ran10, w: w5, h: h5 };
+            rankaku();
             timerId = setTimeout(finish, limitTime[lt])
         }
 
@@ -372,7 +423,7 @@
                 p4.innerHTML = "ハイスコア" + j3;
                 ahaikou.play();
             }
-            timerId = setTimeout(saisyoukyo, 3100);
+            timerId = setTimeout(saisyoukyo, 1000);
             function saisyoukyo() {
                 ctx.clearRect(0, 0, 1280, 720);
                 let text = "ゲーム終了！総スコア" + j + "ポイント！";
@@ -459,26 +510,7 @@
                 no2 = 0;
                 no3 = 0;
 
-                ran1 = Math.floor(Math.random() * a); //縦座標ランダムenemy1
-                ran2 = Math.floor(Math.random() * b); //横座標ランダムenemy1
-                ran3 = Math.floor(Math.random() * a); //縦座標ランダムenemy2
-                ran4 = Math.floor(Math.random() * b); //横座標ランダムenemy2
-                ran5 = Math.floor(Math.random() * a); //縦座標ランダムenemy3
-                ran6 = Math.floor(Math.random() * b); //横座標ランダムenemy3
-                ran7 = Math.floor(Math.random() * a); //縦座標ランダムally1
-                ran8 = Math.floor(Math.random() * b); //横座標ランダムally1
-                ran9 = Math.floor(Math.random() * a); //縦座標ランダムally2
-                ran10 = Math.floor(Math.random() * b); //横座標ランダムally2
-                ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                ctx.drawImage(allly2, ran9, ran10, w5, h5);
-                ctx.drawImage(enemy1, ran1, ran2, w1, h1);
-                ctx.drawImage(enemy2, ran3, ran4, w2, h2);
-                ctx.drawImage(enemy3, ran5, ran6, w3, h3);
-                enemy1Size = { x: ran1, y: ran2, w: w1, h: h1 };
-                enemy2Size = { x: ran3, y: ran4, w: w2, h: h2 };
-                enemy3Size = { x: ran5, y: ran6, w: w3, h: h3 };
-                ally1Size = { x: ran7, y: ran8, w: w4, h: h4 };
-                ally2Size = { x: ran9, y: ran10, w: w5, h: h5 };
+                rankaku();
                 hit1 =
                     (enemy1Size.x <= point.x && point.x <= enemy1Size.x + enemy1Size.w)
                     && (enemy1Size.y <= point.y && point.y <= enemy1Size.y + enemy1Size.h)
@@ -494,6 +526,11 @@
                 hit5 =
                     (ally2Size.x <= point.x && point.x <= ally2Size.x + ally2Size.w)
                     && (ally2Size.y <= point.y && point.y <= ally2Size.y + ally2Size.h);
+            }
+
+            function mikatakaki() {
+                ctx.drawImage(allly1, ran7, ran8, w4, h4);
+                ctx.drawImage(allly2, ran9, ran10, w5, h5);
             }
 
             if (hit1) {
@@ -516,22 +553,18 @@
                 if (no1 == 1 && no2 == 1 && no3 == 1) {
                     setTimeout(kaku, d1);
                 } else if (no2 == 1) {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy3, ran5, ran6, w3, h3);
                 } else if (no3 == 1) {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy2, ran3, ran4, w2, h2);
                 } else {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy2, ran3, ran4, w2, h2);
                     ctx.drawImage(enemy3, ran5, ran6, w3, h3);
                     console.log("kaiyayo");
                 }
 
-                //setTimeout(kaku, d1);
 
             } else if (hit2) {
                 audio1.pause();
@@ -553,21 +586,17 @@
                 if (no1 == 1 && no2 == 1 && no3 == 1) {
                     setTimeout(kaku, d1);
                 } else if (no1 == 1) {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy3, ran5, ran6, w3, h3);
                 } else if (no3 == 1) {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy1, ran1, ran2, w1, h1);
                 } else {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy1, ran1, ran2, w1, h1);
                     ctx.drawImage(enemy3, ran5, ran6, w3, h3);
                     console.log("kaiyayo");
                 }
-                //setTimeout(kaku, d1);
 
             } else if (hit3) {
                 audio1.pause();
@@ -591,23 +620,17 @@
                 if (no1 == 1 && no2 == 1 && no3 == 1) {
                     setTimeout(kaku, d1);
                 } else if (no1 == 1) {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy2, ran3, ran4, w2, h2);
                 } else if (no2 == 1) {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy1, ran1, ran2, w1, h1);
                 } else {
-                    ctx.drawImage(allly1, ran7, ran8, w4, h4);
-                    ctx.drawImage(allly2, ran9, ran10, w5, h5);
+                    mikatakaki();
                     ctx.drawImage(enemy1, ran1, ran2, w1, h1);
                     ctx.drawImage(enemy2, ran3, ran4, w2, h2);
                     console.log("kaiyayo");
                 }
-                //setTimeout(kaku, d1);
-
-                //setTimeout(kaku, d1);
 
             } else if (hit4) {
                 audio1.pause();
@@ -646,7 +669,7 @@
             document.getElementById("sta").style.left = xza + "px";
         }
         document.getElementById("sta").style.opacity = 1;
-        let pos = { x: 0, y: 0 };
+
     </script>
 </body>
 
