@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>2225117-ミニプロdemo</title>
+    <title>2225117-ミニプロ最終版</title>
     <style>
         #enemy1 {
             position: absolute;
@@ -325,7 +325,6 @@
             enemy1Size = { x: ran1, y: ran2, w: w1, h: h1 };
             enemy2Size = { x: ran3, y: ran4, w: w2, h: h2 };
             enemy3Size = { x: ran5, y: ran6, w: w3, h: h3 };
-
         }
 
         window.onload = function () {
@@ -336,11 +335,14 @@
             canvas.addEventListener("click", hoge);
         }
 
-        function mouseDownListener(e) {
-            const rect = e.target.getBoundingClientRect();
-            pos.x = e.clientX - rect.left;
-            pos.y = e.clientY - rect.top;
-        };
+        document.onmousemove = function () {
+            let xza = event.clientX; //今現在の左上から
+            let yza = event.clientY; //同じく
+            document.getElementById("sta").style.top = yza + "px";
+            document.getElementById("sta").style.left = xza + "px";
+        }
+        document.getElementById("sta").style.opacity = 1;
+
         document.getElementById("lt1").onclick = function () {
             lt = 0;
             count1 = 30;
@@ -372,9 +374,6 @@
         document.getElementById("rise").onclick = function () {
             location.reload();
         }
-
-
-
 
         document.getElementById("start").onclick = function () {
             canvas = document.getElementById("can");
@@ -445,10 +444,7 @@
 
         function hoge(e) {
             let rect = canvas.getBoundingClientRect();
-            let point = {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
-            };
+            let point = { x: e.clientX - rect.left, y: e.clientY - rect.top };
 
             let bakuxza = event.clientX; //今現在の左上から
             let bakuyza = event.clientY; //同じく
@@ -516,7 +512,7 @@
                 rankaku();
                 hit1 =
                     (enemy1Size.x <= point.x && point.x <= enemy1Size.x + enemy1Size.w)
-                    && (enemy1Size.y <= point.y && point.y <= enemy1Size.y + enemy1Size.h)
+                    && (enemy1Size.y <= point.y && point.y <= enemy1Size.y + enemy1Size.h);
                 hit2 =
                     (enemy2Size.x <= point.x && point.x <= enemy2Size.x + enemy2Size.w)
                     && (enemy2Size.y <= point.y && point.y <= enemy2Size.y + enemy2Size.h);
@@ -540,14 +536,14 @@
                 audio1.pause();
                 audio1.currentTime = 0;
                 j = j + 2;
-                j1 = j1 + 1
+                j1 = j1 + 1;
                 console.log(j);
                 const p = document.getElementById("r1");
                 p.innerHTML = "敵を" + j1 + "体撃破";
                 const p3 = document.getElementById("r3");
                 p3.innerHTML = "総スコア" + j;
                 audio1.play();
-                no1 = 1
+                no1 = 1;
                 enemy1Size = { x: 0, y: 0, w: 0, h: 0 };
                 ctx.clearRect(0, 0, 1280, 720);
                 console.log(no1);
@@ -573,14 +569,14 @@
                 audio1.pause();
                 audio1.currentTime = 0;
                 j = j + 3;
-                j1 = j1 + 1
+                j1 = j1 + 1;
                 console.log(j);
                 const p = document.getElementById("r1");
                 p.innerHTML = "敵を" + j1 + "体撃破";
                 const p3 = document.getElementById("r3");
                 p3.innerHTML = "総スコア" + j;
                 audio1.play();
-                no2 = 1
+                no2 = 1;
                 enemy2Size = { x: 0, y: 0, w: 0, h: 0 };
                 ctx.clearRect(0, 0, 1280, 720);
                 console.log(no1);
@@ -605,7 +601,7 @@
                 audio1.pause();
                 audio1.currentTime = 0;
                 j = j + 1;
-                j1 = j1 + 1
+                j1 = j1 + 1;
                 console.log(j);
                 const p = document.getElementById("r1");
                 p.innerHTML = "敵を" + j1 + "体撃破";
@@ -614,7 +610,7 @@
                 audio1.play();
 
                 ctx.clearRect(0, 0, 1280, 720);
-                no3 = 1
+                no3 = 1;
                 enemy3Size = { x: 0, y: 0, w: 0, h: 0 };
                 ctx.clearRect(0, 0, 1280, 720);
                 console.log(no1);
@@ -646,7 +642,6 @@
                 const p3 = document.getElementById("r3");
                 p3.innerHTML = "総スコア" + j;
                 audio1.play();
-
                 ctx.clearRect(0, 0, 1280, 720);
                 setTimeout(kaku, d1);
 
@@ -665,13 +660,7 @@
                 setTimeout(kaku, d1);
             }
         }
-        document.onmousemove = function () {
-            let xza = event.clientX; //今現在の左上から
-            let yza = event.clientY; //同じく
-            document.getElementById("sta").style.top = yza + "px";
-            document.getElementById("sta").style.left = xza + "px";
-        }
-        document.getElementById("sta").style.opacity = 1;
+
 
     </script>
 </body>
